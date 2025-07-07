@@ -25,5 +25,9 @@ public class Ticket {
     @Enumerated
     private Sector sector;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(table = "concert", name = "concert_id")
+    private Concert concert;
+
     private LocalDate purchaseDate;
 }
