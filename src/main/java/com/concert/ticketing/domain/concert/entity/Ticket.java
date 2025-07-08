@@ -1,12 +1,19 @@
 package com.concert.ticketing.domain.concert.entity;
 
+import java.time.LocalDate;
+
 import com.concert.ticketing.domain.member.entity.Member;
-import jakarta.persistence.*;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDate;
 
 @Table(name = "ticket")
 @Entity
@@ -26,7 +33,7 @@ public class Ticket {
     private Sector sector;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(table = "concert", name = "concert_id")
+    @JoinColumn(name = "id")
     private Concert concert;
 
     private LocalDate purchaseDate;
