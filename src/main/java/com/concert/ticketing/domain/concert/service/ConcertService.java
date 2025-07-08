@@ -1,5 +1,6 @@
 package com.concert.ticketing.domain.concert.service;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.concert.ticketing.domain.concert.dto.ConcertResponse;
@@ -14,6 +15,7 @@ public class ConcertService {
 
 	private final ConcertRepository concertRepository;
 
+	@Cacheable(value = "concert", key = "1",cacheManager = "contentCacheManager")
 	public ConcertResponse getConcert() {
 		Concert concert = concertRepository.getConcertByIdOrThrow(1L);
 		return ConcertResponse.of(concert);
