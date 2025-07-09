@@ -19,22 +19,22 @@ public class AuthService {
 
     // 회원가입
     public void signup(SignupRequestDto request) {
-        if (memberRepository.existsByEmail(request.email())) {
+        if (memberRepository.existsByEmail(request.getEmail())) {
             throw new IllegalArgumentException("이미 가입된 이메일입니다.");
         }
 
         Member member = new Member();
-        member.setEmail(request.email());
-        member.setPassword(passwordEncoder.encode(request.password()));
-        member.setName(request.name());
+        member.setEmail(request.getEmail());
+        member.setPassword(passwordEncoder.encode(request.getPassword()));
+        member.setName(request.getName());
 
         memberRepository.save(member);
     }
 
     // 로그인
     public String login(LoginRequestDto request) {
-        String email = request.email();
-        String password = request.password();
+        String email = request.getEmail();
+        String password = request.getPassword();
 
         Member member = memberRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("등록된 이메일이 없습니다."));
