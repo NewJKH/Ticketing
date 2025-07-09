@@ -4,7 +4,7 @@ CREATE TABLE `Ticket`
     `place`         VARCHAR(20) NULL,
     `purchase_date` DATE        NULL,
     `email`         VARCHAR(20) NOT NULL,
-    `Key`           Long        NOT NULL
+    `concert_id`    BIGINT        NOT NULL
 );
 
 CREATE TABLE `Concert`
@@ -50,4 +50,10 @@ ALTER TABLE `Concert_Sector`
     ADD CONSTRAINT `PK_CONCERT_SECTOR` PRIMARY KEY (
                                                     `name`
         );
+
+ALTER TABLE `Ticket`
+    ADD CONSTRAINT FK_TICKET_CON
+        FOREIGN KEY (concert_id)
+            REFERENCES Concert(id);
+
 
