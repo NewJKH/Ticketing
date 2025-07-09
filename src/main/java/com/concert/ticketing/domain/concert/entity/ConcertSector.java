@@ -19,14 +19,13 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ConcertSector {
+	@Id
+	@Enumerated
+	private Sector name;
 
-  @Id
-  @Enumerated
-  private Sector name;
+	private int remain;
 
-  private int remain;
-
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "concert_id")
-  private Concert concert;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "concert_id")
+	private Concert concert;
 }

@@ -18,15 +18,14 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Concert {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+	private String title;
+	private String description;
 
-  private String title;
-  private String description;
-
-  private LocalDate date;
-  private String place;
-  private String artist;
+	private LocalDate date;
+	private String place;
+	private String artist;
 }
