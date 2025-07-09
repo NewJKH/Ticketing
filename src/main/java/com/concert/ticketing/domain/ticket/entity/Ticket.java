@@ -1,5 +1,7 @@
-package com.concert.ticketing.domain.concert.entity;
+package com.concert.ticketing.domain.ticket.entity;
 
+import com.concert.ticketing.domain.concert.entity.Concert;
+import com.concert.ticketing.domain.concert.entity.Sector;
 import com.concert.ticketing.domain.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -26,7 +28,7 @@ public class Ticket {
     private Sector sector;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(table = "concert", name = "concert_id")
+    @JoinColumn(name = "concert_id")
     private Concert concert;
 
     private LocalDate purchaseDate;
