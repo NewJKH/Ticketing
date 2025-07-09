@@ -1,5 +1,6 @@
 package com.concert.ticketing.domain.member.controller;
 
+import com.concert.ticketing.common.response.ApiResponse;
 import com.concert.ticketing.domain.member.dto.LoginRequestDto;
 import com.concert.ticketing.domain.member.dto.LoginResponseDto;
 import com.concert.ticketing.domain.member.dto.SignupRequestDto;
@@ -13,27 +14,48 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-    @RequiredArgsConstructor
-    @RequestMapping("/api/auth")
-    @RestController
-    @Slf4j
-    public class AuthController {
+import java.time.LocalDateTime;
 
-        private final AuthService authService;
+@RequiredArgsConstructor
+@RequestMapping("/api")
+@RestController
+@Slf4j
+public class AuthController {
 
-        // 회원가입
-        @PostMapping("/signup")
-        public ResponseEntity<Void> signup(@RequestBody SignupRequestDto request) {
-            authService.signup(request);
-            return ResponseEntity.status(HttpStatus.CREATED).build();
-        }
+    private final AuthService authService;
 
-        // 로그인
-        @PostMapping("/login")
-        public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDto request) {
-            String token = authService.login(request);
-            return ResponseEntity.ok(new LoginResponseDto(token));
-        }
+    // 회원가입 - 공동객체로 수정
+    @PostMapping("/signup")
+    public ResponseEntity<ApiResponse<Void>> signup(
+            @RequestBody SignupRequestDto request
+    ) {
+        authService.signup(request);
+
+        ApiResponse<Void> response = new ApiResponse<>(
+                true,
+                "회원가입 성공",
+                null
+        );
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
+
+    // 로그인 - 공동객체로 수정
+    @PostMapping("/login")
+    public ResponseEntity<ApiResponse<LoginResponseDto>> login(
+            @RequestBody LoginRequestDto request
+    ) {
+        String token = authService.login(request);
+        LoginResponseDto responseDto = new LoginResponseDto(token);
+
+        ApiResponse<LoginResponseDto> response = new ApiResponse<>(
+                true,
+                "로그인 성공",
+                responseDto
+        );
+
+        return ResponseEntity.ok(response);
+    }
+}
 
 
