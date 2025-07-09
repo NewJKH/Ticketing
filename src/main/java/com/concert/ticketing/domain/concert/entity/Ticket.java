@@ -33,7 +33,7 @@ public class Ticket {
     private Sector sector;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "concert_id")
     private Concert concert;
 
     private LocalDate purchaseDate;
