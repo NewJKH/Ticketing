@@ -1,11 +1,12 @@
 package com.concert.ticketing.domain.ticket.repository;
 
-import com.concert.ticketing.domain.ticket.dto.response.TicketResponse;
 import java.util.List;
+
+import com.concert.ticketing.domain.ticket.dto.response.TicketResponse;
 
 public interface TicketCustomRepository {
 
-    void deleteTickets(String email);
+	void deleteTickets(String email);
 
-    List<TicketResponse> getMyTickets(String email);
+	List<TicketResponse> getMyTickets(String email);
 }
