@@ -30,14 +30,15 @@ public class RedisCacheConfig {
 		ObjectMapper objectMapper = new ObjectMapper();
 		objectMapper
 			.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
-			.registerModules(new JavaTimeModule(),new Jdk8Module())
+			.registerModules(new JavaTimeModule(), new Jdk8Module())
 			.registerModule(new ParameterNamesModule())
-			.activateDefaultTyping(LaissezFaireSubTypeValidator.instance, ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY);
-
+			.activateDefaultTyping(LaissezFaireSubTypeValidator.instance, ObjectMapper.DefaultTyping.NON_FINAL,
+				JsonTypeInfo.As.PROPERTY);
 
 		RedisCacheConfiguration redisCacheConfiguration = RedisCacheConfiguration.defaultCacheConfig()
 			.serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer()))
-			.serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer(objectMapper)))
+			.serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(
+				new GenericJackson2JsonRedisSerializer(objectMapper)))
 			.entryTtl(Duration.ofMinutes(10L)); // <- 1분
 
 		return RedisCacheManager.RedisCacheManagerBuilder.fromConnectionFactory(cf)

@@ -10,9 +10,9 @@ import com.concert.ticketing.common.response.ApiResponse;
 public class GlobalExceptionHandler {
 
 	@ExceptionHandler(CustomException.class)
-	public ResponseEntity<ApiResponse<ErrorResponse>> error(CustomException e){
+	public ResponseEntity<ApiResponse<ErrorResponse>> error(CustomException e) {
 		return ResponseEntity
 			.status(e.getErrorCode().getHttpStatus())
-			.body(ApiResponse.fail(e.getMessage(),new ErrorResponse(e.getErrorCode())));
+			.body(ApiResponse.fail(e.getMessage(), new ErrorResponse(e.getErrorCode())));
 	}
 }

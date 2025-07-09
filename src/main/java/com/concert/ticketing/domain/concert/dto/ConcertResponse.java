@@ -20,7 +20,8 @@ public class ConcertResponse {
 	private String place;
 	private String artist;
 
-	public static ConcertResponse of(Concert concert){
-		return new ConcertResponse(concert.getTitle(),concert.getDescription(),concert.getDate(),concert.getPlace(), concert.getArtist());
+	public static ConcertResponse of(Concert concert) {
+		return new ConcertResponse(concert.getTitle(), concert.getDescription(), concert.getDate(), concert.getPlace(),
+			concert.getArtist());
 	}
 }

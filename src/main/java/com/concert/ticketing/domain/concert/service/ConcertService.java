@@ -15,7 +15,7 @@ public class ConcertService {
 
 	private final ConcertRepository concertRepository;
 
-	@Cacheable(value = "concert", key = "1",cacheManager = "contentCacheManager")
+	@Cacheable(value = "concert", key = "1", cacheManager = "contentCacheManager")
 	public ConcertResponse getConcert() {
 		Concert concert = concertRepository.getConcertByIdOrThrow(1L);
 		return ConcertResponse.of(concert);

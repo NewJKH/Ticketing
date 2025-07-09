@@ -22,19 +22,19 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Ticket {
 
-    @Id
-    private String number;
+	@Id
+	private String number;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "email")
-    private Member member;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "email")
+	private Member member;
 
-    @Enumerated
-    private Sector sector;
+	@Enumerated
+	private Sector sector;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "concert_id")
-    private Concert concert;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "concert_id")
+	private Concert concert;
 
-    private LocalDate purchaseDate;
+	private LocalDate purchaseDate;
 }

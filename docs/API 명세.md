@@ -7,6 +7,7 @@
     - URL: `{{url}}/api/concert`
 
 - 응답: `200 OK`
+
 ```json
 {
     "success": true,
@@ -23,6 +24,7 @@
 ```
 
 - 응답: `404 NOT FOUND`
+
 ```json
 {
     "success": false,

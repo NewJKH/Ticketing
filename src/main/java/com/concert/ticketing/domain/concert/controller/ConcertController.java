@@ -17,12 +17,12 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api")
 public class ConcertController {
 
-    private final ConcertService concertService;
+	private final ConcertService concertService;
 
-    @GetMapping("/concert")
-    public ResponseEntity<ApiResponse<ConcertResponse>> find() {
-    	return ResponseEntity
-    		.status(HttpStatus.OK)
-    		.body(ApiResponse.success("OK", concertService.getConcert()));
-    }
+	@GetMapping("/concert")
+	public ResponseEntity<ApiResponse<ConcertResponse>> find() {
+		return ResponseEntity
+			.status(HttpStatus.OK)
+			.body(ApiResponse.success("OK", concertService.getConcert()));
+	}
 }
