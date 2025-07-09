@@ -1,6 +1,7 @@
 package com.concert.ticketing.domain.concert.entity;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
@@ -20,7 +21,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class ConcertSector {
 	@Id
-	@Enumerated
+	@Enumerated(EnumType.STRING)
 	private Sector name;
 
 	private int remain;
