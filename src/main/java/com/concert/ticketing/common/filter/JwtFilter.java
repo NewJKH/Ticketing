@@ -6,17 +6,15 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-
-
 @Slf4j(topic = "JwtFilter")
-@RequiredArgsConstructor
 @Component
+@RequiredArgsConstructor
 public class JwtFilter implements Filter {
 
     private final JwtUtil jwtUtil;
@@ -27,25 +25,20 @@ public class JwtFilter implements Filter {
 
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
-        String requestURI = httpRequest.getRequestURI();
 
-        // 로그인, 회원가입 등 토큰 없이 접근 가능한 경로는 필터 패스
-        if (requestURI.equals("/api/auth/login") || requestURI.equals("/api/auth/signup")) {
-            chain.doFilter(request, response); // 로그인, 회원가입은 토큰 검사 없이 통과
-            return;
-        }
-
+        // Authorization 헤더에서 토큰 가져오기
         String authorizationHeader = httpRequest.getHeader("Authorization");
 
+        // 토큰이 없으면 필터 통과 (SecurityConfig에서 허용된 요청일 수 있음)
         if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
-            log.info("JWT 토큰이 필요합니다.");
-            httpResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, "JWT 토큰이 필요합니다.");
+            chain.doFilter(request, response);
             return;
         }
 
+        // 실제 토큰 부분만 추출
         String jwt = authorizationHeader.substring(7);
 
-        // 토큰 유효성 검사
+        // 토큰 검증 실패 시 403 Forbidden 응답
         if (!jwtUtil.validateToken(jwt)) {
             httpResponse.setStatus(HttpServletResponse.SC_FORBIDDEN);
             httpResponse.setContentType("application/json; charset=UTF-8");
@@ -54,18 +47,16 @@ public class JwtFilter implements Filter {
             return;
         }
 
-        // 토큰이 유효하면 사용자 정보(email) 추출
+        // 토큰이 유효하면 이메일 추출
         String email = jwtUtil.getEmailFromToken(jwt);
-        if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            // 여기서 인증 객체 생성
-            Authentication authentication = jwtUtil.getAuthentication(email);
 
-            // SecurityContext에 인증정보 등록
+        // SecurityContext에 인증 정보가 없으면 인증 처리
+        if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            Authentication authentication = jwtUtil.getAuthentication(email);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
 
-        // 다음 필터로 진행
+        // 다음 필터나 컨트롤러로 요청 전달
         chain.doFilter(request, response);
     }
 }
-
