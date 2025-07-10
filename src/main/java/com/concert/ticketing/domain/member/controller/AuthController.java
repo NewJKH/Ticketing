@@ -31,8 +31,7 @@ public class AuthController {
     ) {
         authService.signup(request);
 
-        ApiResponse<Void> response = new ApiResponse<>(
-                true,
+        ApiResponse<Void> response = ApiResponse.success(
                 "회원가입 성공",
                 null
         );
@@ -48,8 +47,7 @@ public class AuthController {
         String token = authService.login(request);
         LoginResponseDto responseDto = new LoginResponseDto(token);
 
-        ApiResponse<LoginResponseDto> response = new ApiResponse<>(
-                true,
+        ApiResponse<LoginResponseDto> response = ApiResponse.success(
                 "로그인 성공",
                 responseDto
         );
