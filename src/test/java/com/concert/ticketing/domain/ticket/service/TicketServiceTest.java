@@ -7,13 +7,13 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
@@ -50,6 +50,11 @@ class TicketServiceTest {
 	void cleanUp() {
 		ticketRepository.deleteAll();
 		memberRepository.deleteAll();
+		redisTemplate.execute((RedisCallback<Void>)connection -> {
+			connection.flushDb();
+			return null;
+		});
+
 	}
 
 	@Test
@@ -59,7 +64,7 @@ class TicketServiceTest {
 		final int BEFORE_TEST_SECTOR_REMAIN = 2; // sql 파일 참고
 		CountDownLatch latch = new CountDownLatch(NUM_REQUEST); // CountDownLatch는 latch 숫자가 특정값이 될 때까지 대기 가능
 		redisTemplate.opsForValue()
-			.set("concert:1:sector:A", Integer.toString(BEFORE_TEST_SECTOR_REMAIN), 5, TimeUnit.SECONDS);
+			.set("concert:1:sector:A", Integer.toString(BEFORE_TEST_SECTOR_REMAIN));
 
 		// when
 		ExecutorService es = runNTimesConcurrently(NUM_REQUEST, latch, () -> {
