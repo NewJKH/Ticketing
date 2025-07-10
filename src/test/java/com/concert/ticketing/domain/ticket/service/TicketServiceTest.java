@@ -53,7 +53,7 @@ class TicketServiceTest {
 	}
 
 	@Test
-	void 남은_티켓_수보다_많이_예약할_수_없다() {
+	void 남은_티켓_수보다_많이_구입할_수_없다() {
 		// given(+setUp): 일단 하나의 사용자가 동시에 5번의 요청을 보내는 것으로 가정
 		final int NUM_REQUEST = 5;
 		final int BEFORE_TEST_SECTOR_REMAIN = 2; // sql 파일 참고
