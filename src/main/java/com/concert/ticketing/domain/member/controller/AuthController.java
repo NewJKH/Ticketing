@@ -1,17 +1,22 @@
 package com.concert.ticketing.domain.member.controller;
 
+
 import com.concert.ticketing.common.response.ApiResponse;
+import com.concert.ticketing.common.utils.JwtUtil;
 import com.concert.ticketing.domain.member.dto.LoginRequestDto;
 import com.concert.ticketing.domain.member.dto.LoginResponseDto;
 import com.concert.ticketing.domain.member.dto.SignupRequestDto;
+import com.concert.ticketing.domain.member.entity.Member;
 import com.concert.ticketing.domain.member.service.AuthService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 
 @RequiredArgsConstructor
 @RequestMapping("/api")
@@ -51,6 +56,22 @@ public class AuthController {
 
         return ResponseEntity.ok(response);
     }
+
+    // 회원 탈퇴
+    @DeleteMapping("/withdraw")
+    public ResponseEntity<ApiResponse<Void>> withdraw(@AuthenticationPrincipal Member member) {
+        String email = member.getEmail(); // 필터에서 세팅한 사용자 이메일
+
+        authService.withdraw(email);
+
+        ApiResponse<Void> response = ApiResponse.success(
+                "회원탈퇴 성공",
+                null
+        );
+
+        return ResponseEntity.ok(response);
+    }
 }
+
 
 
