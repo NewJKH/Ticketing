@@ -3,7 +3,7 @@ package com.concert.ticketing.domain.ticket.service;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import org.springframework.context.annotation.Lazy;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,8 +32,7 @@ public class TicketService {
 	private final ConcertRepository concertRepository;
 	private final StringRedisTemplate redisTemplate;
 	private final ConcertSectorRepository sectorRepository;
-	@Lazy
-	private final TicketService self;
+	private final ObjectProvider<TicketService> self;
 
 	@RedisLock(key = "'lock:concert:' + #concertId + ':sector:' + #sector.name()")
 	@Transactional
@@ -81,7 +80,7 @@ public class TicketService {
 
 		for (TicketResponse ticketResponse : myTickets) {
 			Sector sector = ticketResponse.getSector();
-			self.deleteTicket(concertId, sector);
+			self.getObject().deleteTicket(concertId, sector);
 		}
 	}
 
