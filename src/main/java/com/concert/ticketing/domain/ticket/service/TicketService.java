@@ -2,15 +2,14 @@ package com.concert.ticketing.domain.ticket.service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.concert.ticketing.common.aop.RedisLock;
 import com.concert.ticketing.common.exception.CustomErrorCode;
 import com.concert.ticketing.common.exception.CustomException;
-import com.concert.ticketing.common.service.RedisLockService;
 import com.concert.ticketing.domain.concert.entity.Concert;
 import com.concert.ticketing.domain.concert.entity.Sector;
 import com.concert.ticketing.domain.concert.repository.ConcertRepository;
@@ -31,9 +30,9 @@ public class TicketService {
 	private final MemberRepository memberRepository;
 	private final ConcertRepository concertRepository;
 	private final StringRedisTemplate redisTemplate;
-	private final RedisLockService redisLockService;
 	private final ConcertSectorRepository sectorRepository;
 
+	@RedisLock(key = "'lock:concert:' + #concertId + ':sector:' + #sector.name()")
 	@Transactional
 	public void bookTicket(Sector sector, Long concertId, String email) {
 
@@ -46,43 +45,23 @@ public class TicketService {
 				() -> new CustomException(CustomErrorCode.CONCERT_NOT_FOUND));
 
 		String redisKey = "concert:" + concertId + ":sector:" + sector.name();
-		String lockKey = "lock:" + redisKey;
-		String lockValue = UUID.randomUUID().toString();
 
-		int tryCount = 0;
-		int maxTryCount = 5;
+		Long remain = redisTemplate.opsForValue().decrement(redisKey);
 
-		try {
-			while (!redisLockService.acquireLock(lockKey, lockValue)) {
-				tryCount++;
-				if (tryCount >= maxTryCount) {
-					throw new CustomException(CustomErrorCode.REDIS_WRONG_TYPE);
-				}
-				Thread.sleep(100);
-			}
-
-			Long remain = redisTemplate.opsForValue().decrement(redisKey);
-
-			if (remain == null) {
-				throw new CustomException(CustomErrorCode.REDIS_WRONG_TYPE);
-			}
-
-			if (remain < 0) {
-				redisTemplate.opsForValue().increment(redisKey);
-				throw new CustomException(CustomErrorCode.TICKET_EMPTY);
-			}
-
-			LocalDateTime now = LocalDateTime.now();
-			String number = sector.name() + "-" + now;
-			Ticket ticket = new Ticket(number, member, sector, concert, now.toLocalDate());
-			ticketRepository.save(ticket);
-			sectorRepository.decrementRemain(concertId, sector);
-
-		} catch (InterruptedException e) {
-			throw new RuntimeException(e);
-		} finally {
-			redisLockService.releaseLock(lockKey, lockValue);
+		if (remain == null) {
+			throw new CustomException(CustomErrorCode.REDIS_WRONG_TYPE);
 		}
+
+		if (remain < 0) {
+			redisTemplate.opsForValue().increment(redisKey);
+			throw new CustomException(CustomErrorCode.TICKET_EMPTY);
+		}
+
+		LocalDateTime now = LocalDateTime.now();
+		String number = sector.name() + "-" + now;
+		Ticket ticket = new Ticket(number, member, sector, concert, now.toLocalDate());
+		ticketRepository.save(ticket);
+		sectorRepository.decrementRemain(concertId, sector);
 	}
 
 	// TODO : concertId 어떤식으로 해야하는지 ?
@@ -99,35 +78,19 @@ public class TicketService {
 
 		for (TicketResponse ticketResponse : myTickets) {
 			Sector sector = ticketResponse.getSector();
-			String redisKey = "concert:" + concertId + ":sector:" + sector.name();
-			String lockKey = "lock:" + redisKey;
-			String lockValue = UUID.randomUUID().toString();
-
-			try {
-				int tryCount = 0;
-				int maxTryCount = 5;
-
-				while (!redisLockService.acquireLock(lockKey, lockValue)) {
-					tryCount++;
-					if (tryCount >= maxTryCount) {
-						throw new CustomException(CustomErrorCode.REDIS_WRONG_TYPE);
-					}
-					Thread.sleep(100);
-				}
-
-				redisTemplate.opsForValue().increment(redisKey);
-				sectorRepository.incrementRemain(concertId, sector);
-			} catch (InterruptedException e) {
-				throw new RuntimeException(e);
-			} finally {
-				redisLockService.releaseLock(lockKey, lockValue);
-			}
+			deleteTicket(concertId, sector);
 		}
-
 	}
 
 	public List<TicketResponse> getMyTickets(String email) {
 
 		return ticketRepository.getMyTickets(email);
+	}
+
+	@RedisLock(key = "'lock:concert:' + #concertId + ':sector:' + #sector.name()")
+	public void deleteTicket(Long concertId, Sector sector) {
+		String redisKey = "concert:" + concertId + ":sector:" + sector.name();
+		redisTemplate.opsForValue().increment(redisKey);
+		sectorRepository.incrementRemain(concertId, sector);
 	}
 }
