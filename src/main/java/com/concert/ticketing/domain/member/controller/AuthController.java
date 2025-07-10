@@ -9,10 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 
@@ -31,8 +28,7 @@ public class AuthController {
     ) {
         authService.signup(request);
 
-        ApiResponse<Void> response = new ApiResponse<>(
-                true,
+        ApiResponse<Void> response = ApiResponse.success(
                 "회원가입 성공",
                 null
         );
@@ -48,8 +44,7 @@ public class AuthController {
         String token = authService.login(request);
         LoginResponseDto responseDto = new LoginResponseDto(token);
 
-        ApiResponse<LoginResponseDto> response = new ApiResponse<>(
-                true,
+        ApiResponse<LoginResponseDto> response = ApiResponse.success(
                 "로그인 성공",
                 responseDto
         );
