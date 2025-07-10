@@ -1,5 +1,7 @@
 package com.concert.ticketing.domain.member.service;
 
+import com.concert.ticketing.common.exception.CustomErrorCode;
+import com.concert.ticketing.common.exception.CustomException;
 import com.concert.ticketing.common.utils.JwtUtil;
 import com.concert.ticketing.common.utils.PasswordEncoder;
 import com.concert.ticketing.domain.member.dto.LoginRequestDto;
@@ -20,7 +22,7 @@ public class AuthService {
     // 회원가입
     public void signup(SignupRequestDto request) {
         if (memberRepository.existsByEmail(request.getEmail())) {
-            throw new IllegalArgumentException("이미 가입된 이메일입니다.");
+            throw new CustomException(CustomErrorCode.EMAIL_ALREADY_EXISTS); //이미 존재하는 이메일입니다.
         }
 
         Member member = new Member(
@@ -38,12 +40,21 @@ public class AuthService {
         String password = request.getPassword();
 
         Member member = memberRepository.findByEmail(email)
-                .orElseThrow(() -> new IllegalArgumentException("등록된 이메일이 없습니다."));
+                .orElseThrow(() -> new CustomException(CustomErrorCode.EMAIL_NOT_FOUND)); //등록된 이메일이 없습니다.
 
         if (!passwordEncoder.matches(password, member.getPassword())) {
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+            throw new CustomException(CustomErrorCode.PASSWORD_MISMATCH); // 비밀번호가 일치하지 않습니다.
         }
 
         return jwtUtil.generateToken(member.getEmail(), member.getName());
     }
+
+    // 회원 탈퇴
+    public void withdraw(String email) {
+        Member member = memberRepository.findByEmail(email)
+                .orElseThrow(() -> new CustomException(CustomErrorCode.MEMBER_NOT_FOUND)); //회원이 존재하지 않습니다.
+
+        memberRepository.delete(member);
+    }
 }
+
