@@ -1,15 +1,18 @@
 package com.concert.ticketing.common.exception;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.concert.ticketing.common.response.ApiResponse;
+
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-        @ExceptionHandler(IllegalArgumentException.class)
-        public ResponseEntity<String> handleIllegalArgument(IllegalArgumentException ex) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
-        }
-    }
+	@ExceptionHandler(CustomException.class)
+	public ResponseEntity<ApiResponse<ErrorResponse>> error(CustomException e) {
+		return ResponseEntity
+			.status(e.getErrorCode().getHttpStatus())
+			.body(ApiResponse.fail(e.getMessage(), new ErrorResponse(e.getErrorCode())));
+	}
+}
