@@ -23,10 +23,11 @@ public class AuthService {
             throw new IllegalArgumentException("이미 가입된 이메일입니다.");
         }
 
-        Member member = new Member();
-        member.setEmail(request.getEmail());
-        member.setPassword(passwordEncoder.encode(request.getPassword()));
-        member.setName(request.getName());
+        Member member = new Member(
+                request.getEmail(),
+                passwordEncoder.encode(request.getPassword()),
+                request.getName()
+        );
 
         memberRepository.save(member);
     }
