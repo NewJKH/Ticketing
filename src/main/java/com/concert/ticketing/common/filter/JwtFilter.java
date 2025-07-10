@@ -1,11 +1,13 @@
 package com.concert.ticketing.common.filter;
 
 import com.concert.ticketing.common.utils.JwtUtil;
+import com.concert.ticketing.domain.member.entity.Member;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -49,12 +51,10 @@ public class JwtFilter implements Filter {
 
         // 토큰이 유효하면 이메일 추출
         String email = jwtUtil.getEmailFromToken(jwt);
-
-        // SecurityContext에 인증 정보가 없으면 인증 처리
-        if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            Authentication authentication = jwtUtil.getAuthentication(email);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-        }
+        Member member = new Member(email,null,null);
+        // Spring Security Context에 인증 정보 설정
+        Authentication auth = new UsernamePasswordAuthenticationToken(member,null,null);
+        SecurityContextHolder.getContext().setAuthentication(auth);
 
         // 다음 필터나 컨트롤러로 요청 전달
         chain.doFilter(request, response);
