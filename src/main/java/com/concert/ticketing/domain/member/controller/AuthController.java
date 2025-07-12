@@ -2,18 +2,16 @@ package com.concert.ticketing.domain.member.controller;
 
 
 import com.concert.ticketing.common.response.ApiResponse;
-import com.concert.ticketing.common.utils.JwtUtil;
 import com.concert.ticketing.domain.member.dto.LoginRequestDto;
 import com.concert.ticketing.domain.member.dto.LoginResponseDto;
 import com.concert.ticketing.domain.member.dto.SignupRequestDto;
 import com.concert.ticketing.domain.member.entity.Member;
 import com.concert.ticketing.domain.member.service.AuthService;
-import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,7 +27,7 @@ public class AuthController {
     // 회원가입 - 공동객체로 수정
     @PostMapping("/signup")
     public ResponseEntity<ApiResponse<Void>> signup(
-            @RequestBody SignupRequestDto request
+            @Valid @RequestBody SignupRequestDto request
     ) {
         authService.signup(request);
 
@@ -44,7 +42,7 @@ public class AuthController {
     // 로그인 - 공동객체로 수정
     @PostMapping("/login")
     public ResponseEntity<ApiResponse<LoginResponseDto>> login(
-            @RequestBody LoginRequestDto request
+            @Valid @RequestBody LoginRequestDto request
     ) {
         String token = authService.login(request);
         LoginResponseDto responseDto = new LoginResponseDto(token);
