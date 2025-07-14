@@ -21,7 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 public class JwtUtil {
 
 	public static final String BEARER_PREFIX = "Bearer ";
-	private static final long TOKEN_VALID_TIME = 60 * 60 * 1000L; // 1시간
+	private static final long TOKEN_VALID_TIME = 30 * 24 * 60 * 60 * 1000L; // 30일
 
 	@Value("${jwt.secret.key}")
 	private String secretKey; // Base64 인코딩된 시크릿 키

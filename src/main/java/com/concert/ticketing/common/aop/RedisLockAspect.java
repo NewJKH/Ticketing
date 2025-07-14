@@ -18,10 +18,12 @@ import com.concert.ticketing.common.exception.CustomErrorCode;
 import com.concert.ticketing.common.exception.CustomException;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Aspect
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class RedisLockAspect {
 	private final RedissonClient redissonClient;
 
@@ -37,6 +39,7 @@ public class RedisLockAspect {
 		);
 
 		if (!available) {
+			log.info("lock wait time exceeded");
 			throw new CustomException(CustomErrorCode.REDIS_WRONG_TYPE);
 		}
 
