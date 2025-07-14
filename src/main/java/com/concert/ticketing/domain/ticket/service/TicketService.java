@@ -3,7 +3,7 @@ package com.concert.ticketing.domain.ticket.service;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import org.springframework.context.annotation.Lazy;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,6 +12,7 @@ import com.concert.ticketing.common.aop.RedisLock;
 import com.concert.ticketing.common.exception.CustomErrorCode;
 import com.concert.ticketing.common.exception.CustomException;
 import com.concert.ticketing.domain.concert.entity.Concert;
+import com.concert.ticketing.domain.concert.entity.ConcertSector;
 import com.concert.ticketing.domain.concert.entity.Sector;
 import com.concert.ticketing.domain.concert.repository.ConcertRepository;
 import com.concert.ticketing.domain.concert.repository.ConcertSectorRepository;
@@ -32,13 +33,49 @@ public class TicketService {
 	private final ConcertRepository concertRepository;
 	private final StringRedisTemplate redisTemplate;
 	private final ConcertSectorRepository sectorRepository;
-	@Lazy
-	private final TicketService self;
+	private final ObjectProvider<TicketService> self;
 
-	@RedisLock(key = "'lock:concert:' + #concertId + ':sector:' + #sector.name()")
+	//@RedisLock(key = "'lock:concert:' + #concertId + ':sector:' + #sector.name()")
 	@Transactional
 	public void bookTicket(Sector sector, Long concertId, String email) {
+		//Redisson Lock
+        /*
+        Member member = memberRepository.findById(email)
+            .orElseThrow(
+                () -> new CustomException(CustomErrorCode.MEMBER_NOT_FOUND));
 
+        Concert concert = concertRepository.findById(concertId)
+            .orElseThrow(
+                () -> new CustomException(CustomErrorCode.CONCERT_NOT_FOUND));
+
+        String redisKey = "concert:" + concertId + ":sector:" + sector.name();
+
+        Long remain = redisTemplate.opsForValue().decrement(redisKey);
+
+        if (remain == null) {
+            throw new CustomException(CustomErrorCode.REDIS_WRONG_TYPE);
+        }
+
+        if (remain < 0) {
+            redisTemplate.opsForValue().increment(redisKey);
+            throw new CustomException(CustomErrorCode.TICKET_EMPTY);
+        }
+
+        LocalDateTime now = LocalDateTime.now();
+        String number = sector.name() + "-" + now;
+        Ticket ticket = new Ticket(number, member, sector, concert, now.toLocalDate());
+        ticketRepository.save(ticket);
+        sectorRepository.decrementRemain(concertId, sector); */
+		//Optimistic Lock
+        /*ConcertSector sectorName = sectorRepository
+            .findByConcert_IdAndName(concertId, sector)
+            .orElseThrow(() -> new CustomException(CustomErrorCode.CONCERT_NOT_FOUND));
+
+        if (sectorName.getRemain() <= 0) {
+            throw new CustomException(CustomErrorCode.TICKET_EMPTY);
+        }
+        sectorName.setRemain(sectorName.getRemain() - 1);*/
+		//Pessimistic Lock
 		Member member = memberRepository.findById(email)
 			.orElseThrow(
 				() -> new CustomException(CustomErrorCode.MEMBER_NOT_FOUND));
@@ -47,18 +84,14 @@ public class TicketService {
 			.orElseThrow(
 				() -> new CustomException(CustomErrorCode.CONCERT_NOT_FOUND));
 
-		String redisKey = "concert:" + concertId + ":sector:" + sector.name();
+		ConcertSector sectorEntity = sectorRepository
+			.findWithPessimisticLock(concertId, sector)
+			.orElseThrow(() -> new CustomException(CustomErrorCode.TICKET_EMPTY));
 
-		Long remain = redisTemplate.opsForValue().decrement(redisKey);
-
-		if (remain == null) {
-			throw new CustomException(CustomErrorCode.REDIS_WRONG_TYPE);
-		}
-
-		if (remain < 0) {
-			redisTemplate.opsForValue().increment(redisKey);
+		if (sectorEntity.getRemain() <= 0) {
 			throw new CustomException(CustomErrorCode.TICKET_EMPTY);
 		}
+		sectorEntity.setRemain(sectorEntity.getRemain() - 1);
 
 		LocalDateTime now = LocalDateTime.now();
 		String number = sector.name() + "-" + now;
@@ -81,7 +114,7 @@ public class TicketService {
 
 		for (TicketResponse ticketResponse : myTickets) {
 			Sector sector = ticketResponse.getSector();
-			self.deleteTicket(concertId, sector);
+			self.getObject().deleteTicket(concertId, sector);
 		}
 	}
 
