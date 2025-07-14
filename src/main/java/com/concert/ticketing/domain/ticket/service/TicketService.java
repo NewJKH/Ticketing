@@ -2,6 +2,7 @@ package com.concert.ticketing.domain.ticket.service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -12,6 +13,7 @@ import com.concert.ticketing.common.aop.RedisLock;
 import com.concert.ticketing.common.exception.CustomErrorCode;
 import com.concert.ticketing.common.exception.CustomException;
 import com.concert.ticketing.domain.concert.entity.Concert;
+import com.concert.ticketing.domain.concert.entity.ConcertSector;
 import com.concert.ticketing.domain.concert.entity.Sector;
 import com.concert.ticketing.domain.concert.repository.ConcertRepository;
 import com.concert.ticketing.domain.concert.repository.ConcertSectorRepository;
@@ -48,15 +50,24 @@ public class TicketService {
 
 		String redisKey = "concert:" + concertId + ":sector:" + sector.name();
 
-		Long remain = redisTemplate.opsForValue().decrement(redisKey);
+		String cached = redisTemplate.opsForValue().get(redisKey);
+		Long remain;
 
-		if (remain == null) {
-			throw new CustomException(CustomErrorCode.REDIS_WRONG_TYPE);
-		}
-
-		if (remain < 0) {
-			redisTemplate.opsForValue().increment(redisKey);
-			throw new CustomException(CustomErrorCode.TICKET_EMPTY);
+		if (cached == null) {
+			// 캐시 존재 X
+			ConcertSector sectorConcert = sectorRepository.findByConcert_IdAndName(concertId, sector);
+			if (sectorConcert.getRemain() <= 0) {
+				throw new CustomException(CustomErrorCode.TICKET_EMPTY);
+			}
+			remain = (long)sectorConcert.getRemain() - 1;
+			redisTemplate.opsForValue().set(redisKey, String.valueOf(remain), 10, TimeUnit.MINUTES);
+		} else {
+			// 캐시 존재
+			remain = redisTemplate.opsForValue().decrement(redisKey);
+			if (remain < 0) {
+				redisTemplate.opsForValue().increment(redisKey);
+				throw new CustomException(CustomErrorCode.TICKET_EMPTY);
+			}
 		}
 
 		LocalDateTime now = LocalDateTime.now();
@@ -65,14 +76,14 @@ public class TicketService {
 		ticketRepository.save(ticket);
 		sectorRepository.decrementRemain(concertId, sector);
 	}
-
-	// TODO : concertId 어떤식으로 해야하는지 ?
+	
 	@Transactional
 	public void deleteMyTickets(String email) {
 
 		Long concertId = 1L;
 		List<TicketResponse> myTickets = ticketRepository.getMyTickets(email);
 		if (myTickets.isEmpty()) {
+
 			throw new CustomException(CustomErrorCode.TICKET_EMPTY);
 		}
 
