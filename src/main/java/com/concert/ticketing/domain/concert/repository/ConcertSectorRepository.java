@@ -29,4 +29,6 @@ public interface ConcertSectorRepository extends JpaRepository<ConcertSector, Se
 		    WHERE cs.name = :sectorName AND cs.concert.id = :concertId
 		""")
 	void incrementRemain(@Param("concertId") Long concertId, @Param("sectorName") Sector sectorName);
+
+	ConcertSector findByConcert_IdAndName(Long concertId, Sector name);
 }
