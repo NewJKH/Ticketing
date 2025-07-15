@@ -2,10 +2,14 @@
 
 - 동시성 제어, 캐싱, 락 방식에 따른 성능측정을 진행하는 콘서트 예매 팀프로젝트입니다.
 
+<br>
+
 ## 🚀 프로젝트 목표
 
 - 기본적인 동시성 제어
 - 비관적 락과 분산 락 적용 및 성능 측정
+
+<br>
 
 ## 🧑‍💻 역할분담
 
@@ -16,6 +20,8 @@
 | 권용준 | 팀원 | - 회원 관리 관련 API 개발 (Security 적용)<br>- README 초안 작성                                        |
 | 이의현 | 팀원 | - 티켓 crud (Lettuce spin Lock 적용)<br>- README 작성                                          |
 | 한재현 | 팀원 | - 동시성 테스트 설계 및 진행<br>- 프로젝트 점검(sql, erd, 패키지 구조)                                         |
+
+<br>
 
 ## 🛠 기술 스택
 
@@ -33,20 +39,26 @@
 - ERD Cloud
 - Notion
 
+<br>
+
 ## 📄 와이어프레임
 
 <img src="./src/main/resources/static/images/wireframe.png" alt="wireframe" style="max-width: 600px; width: 100%;" />
 
+<br>
+
 ## 📄 ERD
 
 ![erd](./src/main/resources/static/images/ERD.png)
+
+<br>
 
 ## 📄 API 명세
 
 - [API 명세서 세부 링크](https://www.notion.so/teamsparta/2292dc3ef514809b852fd6de2acd9694?v=2292dc3ef51480a8b5b5000c3f2aecd0)
 
   | 메서드 | URL | 설명 |
-                                                                                                                                                |--------|-----------------|----------|
+                                                                                                                                                                      |--------|-----------------|----------|
   | POST | /api/signup | 회원가입 |
   | POST | /api/login | 로그인 |
   | GET | /api/concert | 공연 정보 조회 |
@@ -55,11 +67,16 @@
   | GET | /api/tickets/my | 예매 조회 |
   | DELETE | /api/tickets/my | 예매 취소 |
 
+<br>
+
 ## ⚡️락 사용 이유 / 구현 방법
 
 <details>
 <summary>락을 사용하는 이유</summary>
--> 하나의 자원에 동시에 여러 요청이 들어오는 경우, 데이터의 무결을 지키기 위해 동시 접근 제어
+
+- 하나의 자원에 동시에 여러 요청이 들어오는 경우, 데이터의 무결성을 지키기 위해 동시 접근 제어
+- 진행하는 프로젝트에서는 티켓 구매, 취소 기능이 존재하여 동시 요청이 들어오는 경우 데이터의 무결성이 깨지는 상황이 발생할 가능성이 존재. 따라서 동시 접근 제어를 티켓 구매/취소 로직에 적용하기 위해 락을 사용
+
 </details>
 
 <details>
@@ -132,6 +149,8 @@ public void bookTicket(Sector sector, Long concertId, String email) {
 
 </details>
 
+<br>
+
 ## 📙동시성 관련 비교 결과
 
 <details>
@@ -162,6 +181,8 @@ public void bookTicket(Sector sector, Long concertId, String email) {
 | **추천 사용 환경**   | 분산 서버 환경                                   | 단일 서버 환경                                   |
 
 </details>
+
+<br>
 
 ## 환경 변수
 
