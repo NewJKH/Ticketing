@@ -18,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 public class ConcertService {
 
 	private final ConcertRepository concertRepository;
-
+	
 	@Cacheable(value = "concert", key = "1", cacheManager = "contentCacheManager")
 	public ConcertResponse getConcert() {
 		Optional<Concert> concertOpt = concertRepository.getConcertById(1L);

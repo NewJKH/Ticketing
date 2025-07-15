@@ -1,4 +1,4 @@
-package com.concert.ticketing.common.response;
+package com.concert.ticketing.common.dto;
 
 import java.time.LocalDateTime;
 

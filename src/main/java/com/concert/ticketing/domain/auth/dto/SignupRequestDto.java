@@ -1,12 +1,12 @@
-package com.concert.ticketing.domain.member.dto;
+package com.concert.ticketing.domain.auth.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-// record -> class로 수정 완료
 @Getter
 @AllArgsConstructor
-public class LoginRequestDto {
+public class SignupRequestDto {
 	String email;
 	String password;
+	String name;
 }

@@ -1,4 +1,4 @@
-package com.concert.ticketing.common.repository;
+package com.concert.ticketing.common.lock;
 
 import java.time.Duration;
 

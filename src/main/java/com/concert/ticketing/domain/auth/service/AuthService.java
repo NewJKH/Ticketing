@@ -1,11 +1,11 @@
-package com.concert.ticketing.domain.member.service;
+package com.concert.ticketing.domain.auth.service;
 
 import org.springframework.stereotype.Service;
 
-import com.concert.ticketing.common.utils.JwtUtil;
-import com.concert.ticketing.common.utils.PasswordEncoder;
-import com.concert.ticketing.domain.member.dto.LoginRequestDto;
-import com.concert.ticketing.domain.member.dto.SignupRequestDto;
+import com.concert.ticketing.common.security.JwtUtil;
+import com.concert.ticketing.common.security.PasswordEncoder;
+import com.concert.ticketing.domain.auth.dto.LoginRequestDto;
+import com.concert.ticketing.domain.auth.dto.SignupRequestDto;
 import com.concert.ticketing.domain.member.entity.Member;
 import com.concert.ticketing.domain.member.repository.MemberRepository;
 

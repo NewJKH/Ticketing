@@ -1,4 +1,7 @@
-package com.concert.ticketing.domain.concert.entity;
+package com.concert.ticketing.domain.sector.entity;
+
+import com.concert.ticketing.domain.concert.entity.Concert;
+import com.concert.ticketing.domain.sector.type.Sector;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

@@ -3,7 +3,7 @@ package com.concert.ticketing.domain.ticket.entity;
 import java.time.LocalDate;
 
 import com.concert.ticketing.domain.concert.entity.Concert;
-import com.concert.ticketing.domain.concert.entity.Sector;
+import com.concert.ticketing.domain.sector.type.Sector;
 import com.concert.ticketing.domain.member.entity.Member;
 
 import jakarta.persistence.Entity;

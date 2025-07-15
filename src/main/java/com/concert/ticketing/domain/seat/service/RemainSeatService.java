@@ -1,4 +1,4 @@
-package com.concert.ticketing.domain.concert.seatService;
+package com.concert.ticketing.domain.seat.service;
 
 import java.util.HashMap;
 import java.util.List;
@@ -8,9 +8,9 @@ import java.util.concurrent.TimeUnit;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
-import com.concert.ticketing.domain.concert.entity.ConcertSector;
-import com.concert.ticketing.domain.concert.repository.ConcertSectorRepository;
-import com.concert.ticketing.domain.concert.seatDto.RemainSeatResponseDto;
+import com.concert.ticketing.domain.sector.entity.ConcertSector;
+import com.concert.ticketing.domain.sector.repository.ConcertSectorRepository;
+import com.concert.ticketing.domain.seat.dto.RemainSeatResponseDto;
 
 import lombok.RequiredArgsConstructor;
 

@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.concert.ticketing.common.response.ApiResponse;
-import com.concert.ticketing.domain.concert.entity.Sector;
-import com.concert.ticketing.domain.ticket.dto.response.TicketResponse;
+import com.concert.ticketing.common.dto.ApiResponse;
+import com.concert.ticketing.domain.sector.type.Sector;
+import com.concert.ticketing.domain.ticket.dto.TicketResponse;
 import com.concert.ticketing.domain.ticket.service.TicketService;
 
 import lombok.RequiredArgsConstructor;

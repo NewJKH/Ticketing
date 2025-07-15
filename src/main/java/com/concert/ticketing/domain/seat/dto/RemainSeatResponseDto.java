@@ -1,4 +1,4 @@
-package com.concert.ticketing.domain.concert.seatDto;
+package com.concert.ticketing.domain.seat.dto;
 
 import java.util.Map;
 

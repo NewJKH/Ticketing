@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
-import com.concert.ticketing.common.response.ApiResponse;
+import com.concert.ticketing.common.dto.ApiResponse;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {

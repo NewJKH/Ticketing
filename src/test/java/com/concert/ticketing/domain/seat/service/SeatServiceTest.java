@@ -1,4 +1,4 @@
-package com.concert.ticketing.domain.concert;
+package com.concert.ticketing.domain.seat.service;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -12,12 +12,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
 import com.concert.ticketing.domain.concert.entity.Concert;
-import com.concert.ticketing.domain.concert.entity.ConcertSector;
-import com.concert.ticketing.domain.concert.entity.Sector;
+import com.concert.ticketing.domain.sector.entity.ConcertSector;
+import com.concert.ticketing.domain.sector.type.Sector;
 import com.concert.ticketing.domain.concert.repository.ConcertRepository;
-import com.concert.ticketing.domain.concert.repository.ConcertSectorRepository;
-import com.concert.ticketing.domain.concert.seatDto.RemainSeatResponseDto;
-import com.concert.ticketing.domain.concert.seatService.RemainSeatService;
+import com.concert.ticketing.domain.sector.repository.ConcertSectorRepository;
+import com.concert.ticketing.domain.seat.dto.RemainSeatResponseDto;
 
 @SpringBootTest
 @AutoConfigureMockMvc

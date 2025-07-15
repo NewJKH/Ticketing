@@ -1,14 +1,14 @@
 package com.concert.ticketing.domain.ticket.repository;
 
 import static com.concert.ticketing.domain.concert.entity.QConcert.*;
-import static com.concert.ticketing.domain.member.entity.QMember.*;
+import static com.concert.ticketing.domain.auth.entity.QMember.*;
 import static com.concert.ticketing.domain.ticket.entity.QTicket.*;
 
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import com.concert.ticketing.domain.ticket.dto.response.TicketResponse;
+import com.concert.ticketing.domain.ticket.dto.TicketResponse;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 

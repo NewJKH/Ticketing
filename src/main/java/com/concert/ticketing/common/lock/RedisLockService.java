@@ -1,10 +1,8 @@
-package com.concert.ticketing.common.service;
+package com.concert.ticketing.common.lock;
 
 import java.time.Duration;
 
 import org.springframework.stereotype.Service;
-
-import com.concert.ticketing.common.repository.RedisLockRepository;
 
 import lombok.RequiredArgsConstructor;
 
