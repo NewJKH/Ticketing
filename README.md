@@ -37,20 +37,16 @@
 
 <img src="./src/main/resources/static/images/wireframe.png" alt="wireframe" style="max-width: 600px; width: 100%;" />
 
----
-
 ## 📄 ERD
 
 ![erd](./src/main/resources/static/images/ERD.png)
-
----
 
 ## 📄 API 명세
 
 - [API 명세서 세부 링크](https://www.notion.so/teamsparta/2292dc3ef514809b852fd6de2acd9694?v=2292dc3ef51480a8b5b5000c3f2aecd0)
 
   | 메서드 | URL | 설명 |
-                                                                                                                                          |--------|-----------------|----------|
+                                                                                                                                                |--------|-----------------|----------|
   | POST | /api/signup | 회원가입 |
   | POST | /api/login | 로그인 |
   | GET | /api/concert | 공연 정보 조회 |
@@ -58,8 +54,6 @@
   | POST | /api/tickets | 티켓 예매 |
   | GET | /api/tickets/my | 예매 조회 |
   | DELETE | /api/tickets/my | 예매 취소 |
-
----
 
 ## ⚡️락 사용 이유 / 구현 방법
 
