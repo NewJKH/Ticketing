@@ -1,8 +1,8 @@
-package com.concert.ticketing.domain.ticket.dto.response;
+package com.concert.ticketing.domain.ticket.dto;
 
 import java.time.LocalDate;
 
-import com.concert.ticketing.domain.concert.entity.Sector;
+import com.concert.ticketing.domain.sector.type.Sector;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

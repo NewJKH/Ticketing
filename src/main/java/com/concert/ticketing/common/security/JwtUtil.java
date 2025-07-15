@@ -1,4 +1,4 @@
-package com.concert.ticketing.common.utils;
+package com.concert.ticketing.common.security;
 
 import java.security.Key;
 import java.util.Base64;

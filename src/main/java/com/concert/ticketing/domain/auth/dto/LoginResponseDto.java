@@ -1,11 +1,10 @@
-package com.concert.ticketing.domain.member.dto;
+package com.concert.ticketing.domain.auth.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-
 @Getter
 @AllArgsConstructor
 public class LoginResponseDto {
-    String token;
+	String token;
 }

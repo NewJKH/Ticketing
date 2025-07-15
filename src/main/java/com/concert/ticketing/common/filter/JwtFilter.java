@@ -9,7 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
-import com.concert.ticketing.common.utils.JwtUtil;
+import com.concert.ticketing.common.security.JwtUtil;
 
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;

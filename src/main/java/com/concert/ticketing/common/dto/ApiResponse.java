@@ -1,4 +1,4 @@
-package com.concert.ticketing.common.response;
+package com.concert.ticketing.common.dto;
 
 import java.time.LocalDateTime;
 
@@ -20,7 +20,7 @@ public class ApiResponse<T> {
 		this.data = data;
 		this.timestamp = LocalDateTime.now();
 	}
-  
+
 	public static <T> ApiResponse<T> success(String message, T data) {
 		return new ApiResponse<>(true, message, data);
 	}

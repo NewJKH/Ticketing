@@ -13,13 +13,13 @@ import com.concert.ticketing.common.aop.RedisLock;
 import com.concert.ticketing.common.exception.CustomErrorCode;
 import com.concert.ticketing.common.exception.CustomException;
 import com.concert.ticketing.domain.concert.entity.Concert;
-import com.concert.ticketing.domain.concert.entity.ConcertSector;
-import com.concert.ticketing.domain.concert.entity.Sector;
+import com.concert.ticketing.domain.sector.entity.ConcertSector;
+import com.concert.ticketing.domain.sector.type.Sector;
 import com.concert.ticketing.domain.concert.repository.ConcertRepository;
-import com.concert.ticketing.domain.concert.repository.ConcertSectorRepository;
+import com.concert.ticketing.domain.sector.repository.ConcertSectorRepository;
 import com.concert.ticketing.domain.member.entity.Member;
 import com.concert.ticketing.domain.member.repository.MemberRepository;
-import com.concert.ticketing.domain.ticket.dto.response.TicketResponse;
+import com.concert.ticketing.domain.ticket.dto.TicketResponse;
 import com.concert.ticketing.domain.ticket.entity.Ticket;
 import com.concert.ticketing.domain.ticket.repository.TicketRepository;
 
@@ -76,7 +76,7 @@ public class TicketService {
 		ticketRepository.save(ticket);
 		sectorRepository.decrementRemain(concertId, sector);
 	}
-	
+
 	@Transactional
 	public void deleteMyTickets(String email) {
 

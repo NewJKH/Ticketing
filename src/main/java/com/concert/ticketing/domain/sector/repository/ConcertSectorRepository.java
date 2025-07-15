@@ -1,4 +1,4 @@
-package com.concert.ticketing.domain.concert.repository;
+package com.concert.ticketing.domain.sector.repository;
 
 import java.util.List;
 
@@ -7,8 +7,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.concert.ticketing.domain.concert.entity.ConcertSector;
-import com.concert.ticketing.domain.concert.entity.Sector;
+import com.concert.ticketing.domain.sector.entity.ConcertSector;
+import com.concert.ticketing.domain.sector.type.Sector;
 
 public interface ConcertSectorRepository extends JpaRepository<ConcertSector, Sector> {
 

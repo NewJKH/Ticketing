@@ -5,13 +5,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter;
 
 import com.concert.ticketing.common.filter.JwtFilter;
-import com.concert.ticketing.common.security.CustomUserDetailsService;
-import com.concert.ticketing.domain.member.repository.MemberRepository;
 
 import lombok.RequiredArgsConstructor;
 
