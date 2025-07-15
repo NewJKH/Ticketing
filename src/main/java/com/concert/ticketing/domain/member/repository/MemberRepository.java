@@ -1,13 +1,14 @@
 package com.concert.ticketing.domain.member.repository;
 
-import com.concert.ticketing.domain.member.entity.Member;
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.Optional;
+import com.concert.ticketing.domain.member.entity.Member;
 
 public interface MemberRepository extends JpaRepository<Member, String> {
 
-    Optional<Member> findByEmail(String email);
+	Optional<Member> findByEmail(String email);
 
-    boolean existsByEmail(String email);
+	boolean existsByEmail(String email);
 }

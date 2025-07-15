@@ -16,10 +16,10 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Member {
 
-    @Id
-    private String email;
+	@Id
+	private String email;
 
-    private String password;
-    private String name;
+	private String password;
+	private String name;
 
 }

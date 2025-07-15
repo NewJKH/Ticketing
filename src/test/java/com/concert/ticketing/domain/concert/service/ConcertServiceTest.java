@@ -26,11 +26,10 @@ class ConcertServiceTest {
 		concertService.getConcert();
 		long end5 = System.currentTimeMillis();
 
-
-		System.out.println("CacheMiss = " + (end-start)+" ms");
-		System.out.println("CacheHit_1 = " + (end2-end)+" ms");
-		System.out.println("CacheHit_1 = " + (end3-end2)+" ms");
-		System.out.println("CacheHit_1 = " + (end4-end3)+" ms");
-		System.out.println("CacheHit_1 = " + (end5-end4)+" ms");
+		System.out.println("CacheMiss = " + (end - start) + " ms");
+		System.out.println("CacheHit_1 = " + (end2 - end) + " ms");
+		System.out.println("CacheHit_1 = " + (end3 - end2) + " ms");
+		System.out.println("CacheHit_1 = " + (end4 - end3) + " ms");
+		System.out.println("CacheHit_1 = " + (end5 - end4) + " ms");
 	}
 }

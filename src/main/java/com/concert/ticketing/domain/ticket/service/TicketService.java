@@ -76,7 +76,7 @@ public class TicketService {
 		ticketRepository.save(ticket);
 		sectorRepository.decrementRemain(concertId, sector);
 	}
-	
+
 	@Transactional
 	public void deleteMyTickets(String email) {
 
