@@ -7,6 +7,7 @@ import com.concert.ticketing.domain.sector.type.Sector;
 import com.concert.ticketing.domain.member.entity.Member;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
@@ -31,7 +32,7 @@ public class Ticket {
 	@JoinColumn(name = "email")
 	private Member member;
 
-	@Enumerated
+	@Enumerated(EnumType.STRING)
 	private Sector sector;
 
 	@ManyToOne(fetch = FetchType.LAZY)
