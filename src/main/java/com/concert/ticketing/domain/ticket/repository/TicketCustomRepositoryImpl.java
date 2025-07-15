@@ -1,7 +1,7 @@
 package com.concert.ticketing.domain.ticket.repository;
 
 import static com.concert.ticketing.domain.concert.entity.QConcert.*;
-import static com.concert.ticketing.domain.auth.entity.QMember.*;
+import static com.concert.ticketing.domain.member.entity.QMember.*;
 import static com.concert.ticketing.domain.ticket.entity.QTicket.*;
 
 import java.util.List;
